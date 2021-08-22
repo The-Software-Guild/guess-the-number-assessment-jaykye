@@ -1,6 +1,7 @@
 package GuessTheNumber.model;
 
 import java.time.LocalDateTime;
+import java.util.Objects;
 
 public class Round {
     int id; // id of the Round. Let the database decide this. Will be autoIncremented but need the field for later when I retrieve it.
@@ -9,6 +10,9 @@ public class Round {
     int numExactMatch;
     int numPartialMatch;
     String result; // in form of e:0:p:0
+    int gameId;
+
+
 
     public int getId() {
         return id;
@@ -34,6 +38,10 @@ public class Round {
         return result;
     }
 
+    public int getGameId() {
+        return gameId;
+    }
+
     public void setId(int id) {
         this.id = id;
     }
@@ -56,5 +64,22 @@ public class Round {
 
     public void setResult(String result) {
         this.result = result;
+    }
+
+    public void setGameId(int gameId) {
+        this.gameId = gameId;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        Round round = (Round) o;
+        return id == round.id && numExactMatch == round.numExactMatch && numPartialMatch == round.numPartialMatch && gameId == round.gameId && Objects.equals(guess, round.guess) && Objects.equals(timeOfGuess, round.timeOfGuess) && Objects.equals(result, round.result);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(id, guess, timeOfGuess, numExactMatch, numPartialMatch, result, gameId);
     }
 }

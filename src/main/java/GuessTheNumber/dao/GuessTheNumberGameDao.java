@@ -10,5 +10,5 @@ public interface GuessTheNumberGameDao {
     Game getGameById(int id);
     Game addGame(Game game);
     void updateGame(Game game);
-    void deleteGameById(Game game);
+    void deleteGameById(int id);
 }

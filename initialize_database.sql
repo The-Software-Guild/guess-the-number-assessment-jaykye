@@ -1,0 +1,15 @@
+DROP DATABASE IF EXISTS GuessTheNumberDB;
+CREATE DATABASE GuessTheNumberDB;
+USE GuessTheNumberDB;
+CREATE TABLE game(
+id INT PRIMARY KEY AUTO_INCREMENT,
+answer CHAR(4),
+finished BOOLEAN);
+
+CREATE TABLE gameRound(
+id INT PRIMARY KEY AUTO_INCREMENT,
+guess CHAR(4),
+timeOfGuess DATETIME,
+result VARCHAR(20),
+gameId INT,
+FOREIGN KEY (gameId) REFERENCES game(id));

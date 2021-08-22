@@ -10,5 +10,5 @@ public interface GuessTheNumberRoundDao {
     Round getRoundById(int id);
     Round addRound(Round round);
     void updateRound(Round round);
-    void deleteRoundById(Round round);
+    void deleteRoundById(int id);
 }
