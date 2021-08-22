@@ -4,6 +4,7 @@ import GuessTheNumber.TestApplicationConfiguration;
 import GuessTheNumber.model.Game;
 import GuessTheNumber.model.Round;
 import org.junit.Before;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -26,7 +27,7 @@ class GuessTheNumberRoundDaoDBTest {
     GuessTheNumberGameDao gameDao;
 
 
-    @Before
+    @BeforeEach
     public void setUp() {
         // 여기서 따로 establish connection 하기 싫은가보다. 그래서 getAllRounds 사용함 (which internally establish connection.)
         // 대신 이 method가 작동을 잘 해야지.
@@ -52,104 +53,113 @@ class GuessTheNumberRoundDaoDBTest {
         game = gameDao.addGame(game);
 
         Round round = new Round();
-        round.setGuess("1234");
+        round.setGuess("2389");
         round.setTimeOfGuess(LocalDateTime.now().truncatedTo(ChronoUnit.SECONDS));
-        round.setResult("e:0:p:0");
-        round.setNumExactMatch(0);
-        round.setNumPartialMatch(0);
+        round.setResult("e:1:p:2");
+        round.setNumExactMatch(1);
+        round.setNumPartialMatch(2);
         round.setGameId(game.getGameId());
-
         round = roundDao.addRound(round);
+
         Round fromDao = roundDao.getRoundById(round.getId());
 
-
-        System.out.println(round.getId());
-        System.out.println(fromDao.getId());
-        System.out.println(round.getGuess());
-        System.out.println(fromDao.getGuess());
-        System.out.println(round.getTimeOfGuess());
-        System.out.println(fromDao.getTimeOfGuess());
-
-        System.out.println(round.getNumExactMatch());
-        System.out.println(round.getNumPartialMatch());
-
-        System.out.println(fromDao.getNumExactMatch());
-        System.out.println(fromDao.getNumPartialMatch());
-
-        System.out.println(game.getGameId());
-        System.out.println(fromDao.getGameId());
-
         assertEquals(round, fromDao);
-        // 알았다. 범인은 numExactMatch, numPartialMatch
     }
 
-//    @Test
-//    public void testGetAllRounds() {
-//        Round room = new Round();
-//        room.setName("Test Round");
-//        room.setDescription("Test Round Description");
-//        roomDao.addRound(room);
-//
-//        Round room2 = new Round();
-//        room2.setName("Test Round 2");
-//        room2.setDescription("Test Round 2");
-//        roomDao.addRound(room2);
-//
-//        List<Round> rooms = roomDao.getAllRounds();
-//
-//        assertEquals(2, rooms.size());
-//        assertTrue(rooms.contains(room));
-//        assertTrue(rooms.contains(room2));
-//    }
-//
-//    @Test
-//    public void testUpdateRound() {
-//        Round room = new Round();
-//        room.setName("Test Round");
-//        room.setDescription("Test Round Description");
-//        room = roomDao.addRound(room);
-//
-//        Round fromDao = roomDao.getRoundById(room.getId());
-//
-//        assertEquals(room, fromDao);
-//
-//        room.setName("Another Test Round");
-//
-//        roomDao.updateRound(room);
-//
-//        assertNotEquals(room, fromDao);
-//
-//        fromDao = roomDao.getRoundById(room.getId());
-//
-//        assertEquals(room, fromDao);
-//    }
-//
-//    @Test
-//    public void testDeleteRound() {
-//        Round room = new Round();
-//        room.setName("Test Round");
-//        room.setDescription("Test Round Description");
-//        room = roomDao.addRound(room);
-//
-//        Employee employee = new Employee();
-//        employee.setFirstName("Test First");
-//        employee.setLastName("Test Last");
-//        employee = employeeDao.addEmployee(employee);
-//
-//        Meeting meeting = new Meeting();
-//        meeting.setName("Test Meeting");
-//        meeting.setTime(LocalDateTime.now());
-//        meeting.setRound(room);
-//        List<Employee> employees = new ArrayList<>();
-//        employees.add(employee);
-//        meeting.setAttendees(employees);
-//        meeting = meetingDao.addMeeting(meeting);
-//
-//        roomDao.deleteRoundById(room.getId());
-//
-//        Round fromDao = roomDao.getRoundById(room.getId());
-//        assertNull(fromDao);
-//    }
-//
-//
+    @Test
+    public void testGetAllRounds() {
+        Game game = new Game();
+        game.setGameId(1);
+        game.setAnswer("2341");
+        game.setFinished(false);
+        game = gameDao.addGame(game);
+
+        Round round = new Round();
+        round.setGuess("2389");
+        round.setTimeOfGuess(LocalDateTime.now().truncatedTo(ChronoUnit.SECONDS));
+        round.setResult("e:1:p:2");
+        round.setNumExactMatch(1);
+        round.setNumPartialMatch(2);
+        round.setGameId(game.getGameId());
+        round = roundDao.addRound(round);
+
+        Game game2 = new Game();
+        game2.setGameId(1);
+        game2.setAnswer("2341");
+        game2.setFinished(false);
+        game2 = gameDao.addGame(game2);
+
+        Round round2 = new Round();
+        round2.setGuess("2389");
+        round2.setTimeOfGuess(LocalDateTime.now().truncatedTo(ChronoUnit.SECONDS));
+        round2.setResult("e:1:p:2");
+        round2.setNumExactMatch(1);
+        round2.setNumPartialMatch(2);
+        round2.setGameId(game2.getGameId());
+        round2 = roundDao.addRound(round2);
+
+
+
+        List<Round> rounds = roundDao.getAllRounds();
+
+        assertEquals(2, rounds.size());
+        assertTrue(rounds.contains(round));
+        assertTrue(rounds.contains(round2));
+    }
+
+    @Test
+    public void testUpdateRound() {
+        Game game = new Game();
+        game.setGameId(1);
+        game.setAnswer("2341");
+        game.setFinished(false);
+        game = gameDao.addGame(game);
+
+        Round round = new Round();
+        round.setGuess("2389");
+        round.setTimeOfGuess(LocalDateTime.now().truncatedTo(ChronoUnit.SECONDS));
+        round.setResult("e:1:p:2");
+        round.setNumExactMatch(1);
+        round.setNumPartialMatch(2);
+        round.setGameId(game.getGameId());
+        round = roundDao.addRound(round);
+
+        Round fromDao = roundDao.getRoundById(round.getId());
+
+        assertEquals(round, fromDao);
+
+        round.setGuess("1234");
+
+        roundDao.updateRound(round);
+
+        assertNotEquals(round, fromDao);
+
+        fromDao = roundDao.getRoundById(round.getId());
+
+        assertEquals(round, fromDao);
+    }
+
+    @Test
+    public void testDeleteRound() {
+        Game game = new Game();
+        game.setGameId(1);
+        game.setAnswer("2341");
+        game.setFinished(false);
+        game = gameDao.addGame(game);
+
+        Round round = new Round();
+        round.setGuess("2389");
+        round.setTimeOfGuess(LocalDateTime.now().truncatedTo(ChronoUnit.SECONDS));
+        round.setResult("e:1:p:2");
+        round.setNumExactMatch(1);
+        round.setNumPartialMatch(2);
+        round.setGameId(game.getGameId());
+        round = roundDao.addRound(round);
+
+        roundDao.deleteRoundById(round.getId());
+
+        Round fromDao = roundDao.getRoundById(round.getId());
+        assertNull(fromDao);
+    }
+
 }

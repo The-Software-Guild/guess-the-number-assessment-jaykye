@@ -26,6 +26,7 @@ public class GuessTheNumberRoundDaoDB implements GuessTheNumberRoundDao {
             // Column labels are the column names in the database.
             // names: id, guess, timeOfGuess, result, gameId
             round.setId(rs.getInt("id"));
+            round.setGuess(rs.getString("guess"));
             round.setTimeOfGuess((rs.getTimestamp("timeOfGuess").toLocalDateTime()));
             // parse the result to integers.
             String result = rs.getString("result");
