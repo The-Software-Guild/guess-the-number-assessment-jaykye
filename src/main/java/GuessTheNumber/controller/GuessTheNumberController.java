@@ -3,7 +3,6 @@ package GuessTheNumber.controller;
 import GuessTheNumber.model.Game;
 import GuessTheNumber.model.Round;
 import GuessTheNumber.service.GuessTheNumberService;
-import GuessTheNumber.service.InvalidGameException;
 import GuessTheNumber.service.InvalidRoundException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -11,7 +10,6 @@ import org.springframework.web.bind.annotation.*;
 
 import java.time.LocalDateTime;
 import java.time.temporal.ChronoUnit;
-import java.util.Collections;
 import java.util.Comparator;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -93,6 +91,10 @@ public class GuessTheNumberController {
     @GetMapping("/game/{gameId}")
     public ResponseEntity<Game>  getGameById(@PathVariable int gameId) {
         Game game = service.getGameById(gameId);
+        if (game == null) {
+            return new ResponseEntity(null, HttpStatus.NOT_FOUND);
+        }
+
         if (!game.isFinished()) {
             game.setAnswer("Game still in progress. Finish the game to see answer.");
         }
@@ -101,12 +103,17 @@ public class GuessTheNumberController {
     }
 
     @GetMapping("/rounds/{gameId}")
-    public List<Round>  getAllRoundsForAGame(@PathVariable int gameId) {
+    public ResponseEntity  getAllRoundsForAGame(@PathVariable int gameId) {
+        Game game = service.getGameById(gameId);
+        if (game == null) {
+            return new ResponseEntity(null, HttpStatus.NOT_FOUND);
+        }
+
         List<Round> rounds = service.getAllRounds();
         List<Round> roundsOfGame = rounds.stream().filter(x -> x.getGameId() == gameId).sorted(
                 Comparator.comparing(Round::getTimeOfGuess)).collect(Collectors.toList());
         // Either one works.
-//        Collections.sort(roundsOfGame, (s1, s2) -> s1.getTimeOfGuess().compareTo(s2.getTimeOfGuess()));
-        return roundsOfGame;
+        // Collections.sort(roundsOfGame, (s1, s2) -> s1.getTimeOfGuess().compareTo(s2.getTimeOfGuess()));
+        return ResponseEntity.ok(roundsOfGame);
     }
 }
