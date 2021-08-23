@@ -1,5 +1,7 @@
 package GuessTheNumber.controller;
 
+import GuessTheNumber.service.InvalidGameException;
+import GuessTheNumber.service.InvalidRoundException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.ControllerAdvice;
@@ -33,4 +35,14 @@ public class GuessTheNumberExceptionHandler extends ResponseEntityExceptionHandl
         return new ResponseEntity<>(err, HttpStatus.UNPROCESSABLE_ENTITY);
     }
 
+    @ExceptionHandler(InvalidRoundException.class)
+
+    public final ResponseEntity<Error> handleInvalidRoundException(
+            InvalidRoundException ex,
+            WebRequest request) {
+
+        Error err = new Error();
+        err.setMessage(ex.getMessage());
+        return new ResponseEntity<>(err, HttpStatus.UNPROCESSABLE_ENTITY);
+    }
 }

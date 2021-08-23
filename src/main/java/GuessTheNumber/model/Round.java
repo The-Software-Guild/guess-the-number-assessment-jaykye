@@ -82,4 +82,10 @@ public class Round {
     public int hashCode() {
         return Objects.hash(id, guess, timeOfGuess, numExactMatch, numPartialMatch, result, gameId);
     }
+
+    public void parseResult() {
+        String[] tokens = this.result.split(":");
+        this.setNumExactMatch(Integer.parseInt(tokens[1]));
+        this.setNumPartialMatch(Integer.parseInt(tokens[3]));
+    }
 }

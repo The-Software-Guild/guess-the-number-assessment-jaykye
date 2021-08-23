@@ -28,12 +28,9 @@ public class GuessTheNumberRoundDaoDB implements GuessTheNumberRoundDao {
             round.setId(rs.getInt("id"));
             round.setGuess(rs.getString("guess"));
             round.setTimeOfGuess((rs.getTimestamp("timeOfGuess").toLocalDateTime()));
+            round.setResult(rs.getString("result"));
             // parse the result to integers.
-            String result = rs.getString("result");
-            round.setResult(result);
-            String[] tokens = result.split(":");
-            round.setNumExactMatch(Integer.parseInt(tokens[1]));
-            round.setNumPartialMatch(Integer.parseInt(tokens[3]));
+            round.parseResult();
             round.setGameId(rs.getInt("gameId"));
             return round;
         }
