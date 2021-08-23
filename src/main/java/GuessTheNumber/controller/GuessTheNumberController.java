@@ -57,6 +57,10 @@ public class GuessTheNumberController {
         String message = "Guess :" + round.getGuess() + " for Game: " + round.getGameId();
         round.setTimeOfGuess(LocalDateTime.now().truncatedTo(ChronoUnit.SECONDS));
         Game game = service.getGameById(round.getGameId());
+        if (game == null) {
+            return new ResponseEntity("Game not found.", HttpStatus.NOT_FOUND);
+        }
+
         if (game.isFinished()){
             return new ResponseEntity("You cannot guess for a finished game.", HttpStatus.UNPROCESSABLE_ENTITY);
         }
